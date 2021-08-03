@@ -13,8 +13,8 @@ install_reqs = [req for req in
 
 setup(
     name='SyncFolder',
-    entry_points={'console_scripts': ['syncfolder=SyncFolder.processor:sync']},
-    version="0.1.1",
+    entry_points={'console_scripts': ['syncfolder=SyncFolder.processor:main']},
+    version="0.1.3",
     description="Python package for synchronizing folders.",
     long_description_content_type="text/x-rst",
     long_description=long_description,

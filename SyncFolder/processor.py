@@ -4,6 +4,18 @@ import shutil
 import sys
 
 
+import argparse
+
+def main():
+    parser=argparse.ArgumentParser(description='Python package for synchronizing folders.')
+
+    parser.add_argument('from_folder_path',type=str,help='source folder path')
+    parser.add_argument('to_folder_path',type=str,help='target folder path')
+
+    args=parser.parse_args()
+
+    sync(args.from_folder_path,args.to_folder_path)
+
 def sync(from_folder_path, to_folder_path):
     _check_from_folder_path(from_folder_path)
     _check_to_folder_path(to_folder_path)
@@ -43,12 +55,20 @@ def sync_folder(from_folder_path, to_folder_path):
         from_file_folder_path = os.path.join(base_from_path, file_folder_name)
         to_file_folder_path = os.path.join(base_to_path, file_folder_name)
 
-        if not os.path.exists(to_file_folder_path):
-            os.mkdir(to_file_folder_path)
-
         if os.path.isdir(from_file_folder_path):
+
+            if not os.path.exists(to_file_folder_path):
+                os.mkdir(to_file_folder_path)
+            elif os.path.isfile(to_file_folder_path):
+                os.remove(to_file_folder_path)
+
             sync_folder(from_file_folder_path, to_file_folder_path)
         elif os.path.isfile(from_file_folder_path):
+
+            if os.path.exists(to_file_folder_path):
+                if os.path.isdir(to_file_folder_path):
+                    os.removedirs(to_file_folder_path)
+
             sync_file(from_file_folder_path, to_file_folder_path)
         else:
             raise Exception('{} IS NEITHER A FILE NOR A FOLDER!'.
